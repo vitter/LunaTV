@@ -2,8 +2,11 @@ name: Sync Upstream LunaTV
 
 on:
   schedule:
-    - cron: '0 5 * * *'  # 每天凌晨5点（UTC时间）自动同步
-  workflow_dispatch:      # 允许手动触发同步
+    - cron: '0 3 * * *'  # 每天凌晨3点（UTC）
+  workflow_dispatch:
+
+permissions:
+  contents: write
 
 jobs:
   sync:
@@ -22,6 +25,7 @@ jobs:
 
       - name: Add upstream repository
         run: |
+          git remote remove upstream || true
           git remote add upstream https://github.com/MoonTechLab/LunaTV.git
           git fetch upstream
 
