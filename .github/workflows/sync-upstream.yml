@@ -2,7 +2,7 @@ name: Sync Upstream LunaTV (Full Auto Merge)
 
 on:
   schedule:
-    - cron: '0 3 * * *'  # 每天凌晨3点（UTC）
+    - cron: '0 4 * * *'  # 每天凌晨4点（UTC）
   workflow_dispatch:
 
 permissions:
