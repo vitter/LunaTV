@@ -46,7 +46,22 @@ jobs:
       - name: Create or update sync branch
         run: |
           git checkout -B sync-upstream
+          # 保存我们的 .nvmrc 和 workflows 目录
+          cp .nvmrc .nvmrc.bak 2>/dev/null || true
+          mkdir -p .workflows-backup
+          cp -r .github/workflows/* .workflows-backup/ 2>/dev/null || true
+          
+          # 执行合并
           git merge upstream/main --no-edit || true
+          
+          # 恢复被排除的文件
+          cp .nvmrc.bak .nvmrc 2>/dev/null || true
+          cp -r .workflows-backup/* .github/workflows/ 2>/dev/null || true
+          rm -rf .workflows-backup .nvmrc.bak
+          
+          # 提交恢复的文件
+          git add .nvmrc .github/workflows/ 2>/dev/null || true
+          git commit --allow-empty -m "chore: restore excluded files after upstream merge" || true
 
       - name: Compare VERSION.txt before PR
         id: version
